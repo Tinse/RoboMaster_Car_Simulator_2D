@@ -5,9 +5,9 @@
 ## 一、保存游戏记忆
 
 ```python
-from rmaics import Rmaics
+from env import Env
 
-game = Rmaics(agent_num=4, render=True)
+game = Env(agent_num=4, render=True)
 game.reset()
 # only when render = True
 game.play()

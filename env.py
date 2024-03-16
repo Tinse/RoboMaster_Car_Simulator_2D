@@ -4,7 +4,7 @@
 from kernel import kernel
 
 
-class Rmaics(object):
+class Env(object):
 
     def __init__(self, agent_num, render=True):
         self.game = kernel(car_num=agent_num, render=render)

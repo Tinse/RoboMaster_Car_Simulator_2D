@@ -31,10 +31,10 @@ g_map = game.get_map()
 导入，声明并初始化，`render`为`True`时显示会画面，并可以使用键盘操作，反之不行
 
 ```python
-from rmaics import Rmaics
+from env import Env
 
 car_num = 4
-game = Rmaics(agent_num=car_num, render=True)
+game = Env(agent_num=car_num, render=True)
 game.reset()
 ```
 

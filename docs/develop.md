@@ -28,11 +28,11 @@
 测试代码：
 
 ```python
-from rmaics import Rmaics
+from env import Env
 import numpy as np
 import time
 
-game = Rmaics(agent_num=2, render=True)
+game = Env(agent_num=2, render=True)
 game.reset()
 actions = np.array([[1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1]])
 

@@ -1,5 +1,5 @@
 import torch
-from rmaics import Rmaics
+from env import Env
 from kernel import record_player
 import numpy as np
 import DQN
@@ -16,7 +16,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 
 """启动游戏环境"""
-game = Rmaics(agent_num=2, render=True)
+game = Env(agent_num=2, render=True)
 game.reset()
 replay_buffer = DQN.ReplayBuffer(buffer_size)
 state_dim = 1
