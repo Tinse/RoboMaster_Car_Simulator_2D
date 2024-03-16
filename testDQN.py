@@ -1,6 +1,6 @@
 import torch
 from env import Env
-from kernel import record_player
+from kernel import RecordPlayer
 import numpy as np
 import DQN
 

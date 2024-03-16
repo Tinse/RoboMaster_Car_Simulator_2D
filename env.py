@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # RoboMaster AI Challenge Simulator (RMAICS)
 
-from kernel import kernel
+from kernel import Kernel
 
 
 class Env(object):
 
     def __init__(self, agent_num, render=True):
-        self.game = kernel(car_num=agent_num, render=render)
+        self.game = Kernel(car_num=agent_num, render=render)
         self.g_map = self.game.get_map()
         self.memory = []
 

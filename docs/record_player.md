@@ -20,9 +20,9 @@ game.save_record('./records/record0.npy')
 ## 二、复现游戏
 
 ```python
-from kernel import record_player
+from kernel import RecordPlayer
 
-player = record_player()
+player = RecordPlayer()
 player.play('./records/record0.npy')
 ```
 

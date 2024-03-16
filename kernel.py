@@ -3,7 +3,7 @@
 kernel v1.0.1 修改为kernel
 '''
 import numpy as np
-
+import pygame
 
 class bullet(object):
     def __init__(self, center, angle, speed, owner):
@@ -41,12 +41,11 @@ class g_map(object):
         self.barriers = barriers
 
 
-class record_player(object):
+class RecordPlayer(object):
     def __init__(self):
         self.map_length = 800
         self.map_width = 500
-        global pygame
-        import pygame
+        # global pygame
         pygame.init()
         self.screen = pygame.display.set_mode((self.map_length, self.map_width))
         pygame.display.set_caption('无人车仿真平台')
@@ -210,8 +209,8 @@ class record_player(object):
         return [np.matmul(x, rotate_matrix) + car[1:3] for x in xs]
 
 
-class kernel(object):
-    def __init__(self, car_num, render=False, record=True):
+class Kernel(object):
+    def __init__(self, car_num, render=False, record: bool = True):
         self.car_num = car_num
         self.render = render
         # below are params that can be challenged depended on situation
