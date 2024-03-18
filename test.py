@@ -4,9 +4,13 @@ import pygame       # 导入pygame模块
 
 
 pygame.init()        # 初始化pygame
-size = width, height = 320, 240     # 设置窗口尺寸
+size = width, height = 800, 500      # 设置窗口尺寸
 screen = pygame.display.set_mode(size)    # 显示窗口
+pygame.display.set_caption('RM AI Challenge Simulator')
 
+gray = (180, 180, 180)
+red = (190, 20, 20)
+blue = (10, 125, 181)
 # 执行死循环，确保窗口一直显示
 while True:
     # 检查事件
