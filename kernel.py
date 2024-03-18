@@ -5,6 +5,7 @@ kernel v1.0.1 修改为kernel
 import numpy as np
 import pygame
 
+
 class bullet(object):
     def __init__(self, center, angle, speed, owner):
         self.center = center.copy()
@@ -210,7 +211,7 @@ class RecordPlayer(object):
 
 
 class Kernel(object):
-    def __init__(self, car_num, render=False, record: bool = True):
+    def __init__(self, car_num, render: bool = False, record: bool = True):
         self.car_num = car_num
         self.render = render
         # below are params that can be challenged depended on situation
@@ -242,15 +243,14 @@ class Kernel(object):
                                   [325.0, 350.0, 400.0, 500.0],
                                   [450.0, 475.0, 0.0, 100.0]], dtype='float32')
         if render:
-            global pygame
-            import pygame
+            # global pygame
             pygame.init()
             self.screen = pygame.display.set_mode((self.map_length, self.map_width))
             pygame.display.set_caption('RM AI Challenge Simulator')
             self.gray = (180, 180, 180)
             self.red = (190, 20, 20)
             self.blue = (10, 125, 181)
-            # load barriers imgs
+            # load barriers images
             self.barriers_img = []
             self.barriers_rect = []
             for i in range(self.barriers.shape[0]):
@@ -258,7 +258,7 @@ class Kernel(object):
                     pygame.image.load('./imgs/barrier_{}.png'.format('horizontal' if i < 3 else 'vertical')))
                 self.barriers_rect.append(self.barriers_img[-1].get_rect())
                 self.barriers_rect[-1].center = [self.barriers[i][0:2].mean(), self.barriers[i][2:4].mean()]
-            # load areas imgs
+            # load areas images
             self.areas_img = []
             self.areas_rect = []
             for oi, o in enumerate(['red', 'blue']):
