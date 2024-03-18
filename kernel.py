@@ -266,7 +266,7 @@ class Kernel(object):
                     self.areas_img.append(pygame.image.load('./imgs/area_{}_{}.png'.format(t, o)))
                     self.areas_rect.append(self.areas_img[-1].get_rect())
                     self.areas_rect[-1].center = [self.areas[oi, ti][0:2].mean(), self.areas[oi, ti][2:4].mean()]
-            # load supply head imgs
+            # load supply head images
             self.head_img = [pygame.image.load('./imgs/area_head_{}.png'.format(i)) for i in ['red', 'blue']]
             self.head_rect = [self.head_img[i].get_rect() for i in range(len(self.head_img))]
             self.head_rect[0].center = [self.areas[0, 1][0:2].mean(), self.areas[0, 1][2:4].mean()]
@@ -279,8 +279,8 @@ class Kernel(object):
             self.info_bar_rect = self.info_bar_img.get_rect()
             self.info_bar_rect.center = [200, self.map_width / 2]
             pygame.font.init()
-            self.font = pygame.font.SysFont('info', 20)
-            self.clock = pygame.time.Clock()
+            self.font = pygame.font.SysFont('info', 20)  # 此处设置字体，由于不存在'info'字体，所有使用默认字体
+            self.clock = pygame.time.Clock() # Q: 为什么要设置时钟？ A: 为了控制帧率
 
     def reset(self):
         self.time = 180
