@@ -797,9 +797,9 @@ class Kernel(object):
 
     def get_armor(self, car, i):
         rotate_matrix = np.array([[np.cos(-np.deg2rad(car[3] + 90)), -np.sin(-np.deg2rad(car[3] + 90))],
-                                  [np.sin(-np.deg2rad(car[3] + 90)), np.cos(-np.deg2rad(car[3] + 90))]])
-        xs = np.array([[0, -30], [18.5, 0], [0, 30], [-18.5, 0]])
-        return np.matmul(xs[i], rotate_matrix) + car[1:3]
+                                  [np.sin(-np.deg2rad(car[3] + 90)), np.cos(-np.deg2rad(car[3] + 90))]])  # 车的旋转矩阵
+        xs = np.array([[0, -30], [18.5, 0], [0, 30], [-18.5, 0]])  # 装甲板在车坐标系中相对车的坐标
+        return np.matmul(xs[i], rotate_matrix) + car[1:3]  # 装甲板绝对坐标 = 装甲板在世界坐标中相对车的坐标 + 车的坐标
 
     def save_record(self, file):
         np.save(file, self.memory)
