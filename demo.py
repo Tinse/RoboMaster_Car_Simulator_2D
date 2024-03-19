@@ -1,5 +1,5 @@
 from env import Env
-game = Env(agent_num=4, render=True)
+game = Env(agent_num=4)
 game.reset()
 # only when render = True
 game.play()
