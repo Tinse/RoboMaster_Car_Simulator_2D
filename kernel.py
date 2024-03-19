@@ -280,7 +280,7 @@ class Kernel(object):
             self.info_bar_rect.center = [200, self.map_width / 2]
             pygame.font.init()
             self.font = pygame.font.SysFont('info', 20)  # 此处设置字体，由于不存在'info'字体，所有使用默认字体
-            self.clock = pygame.time.Clock() # Q: 为什么要设置时钟？ A: 为了控制帧率
+            self.clock = pygame.time.Clock()  # Q: 为什么要设置时钟？ A: 为了控制帧率
 
     def reset(self):
         self.time = 180
@@ -360,10 +360,10 @@ class Kernel(object):
         if self.render: self.update_display()
 
     def move_car(self, n):
-        if not self.cars[n, 7]:
+        if not self.cars[n, 7]:  # 7: freeze_time
             # move chassis
-            if self.acts[n, 0]:
-                p = self.cars[n, 3]
+            if self.acts[n, 0]:  # 0: rotate_speed
+                p = self.cars[n, 3]  # 3: angle
                 self.cars[n, 3] += self.acts[n, 0]
                 if self.cars[n, 3] > 180: self.cars[n, 3] -= 360
                 if self.cars[n, 3] < -180: self.cars[n, 3] += 360
@@ -371,19 +371,19 @@ class Kernel(object):
                     self.acts[n, 0] = -self.acts[n, 0] * self.move_discount
                     self.cars[n, 3] = p
             # move gimbal
-            if self.acts[n, 1]:
-                self.cars[n, 4] += self.acts[n, 1]
+            if self.acts[n, 1]:  # 1: yaw_speed
+                self.cars[n, 4] += self.acts[n, 1]  # 4: yaw
                 if self.cars[n, 4] > 90: self.cars[n, 4] = 90
                 if self.cars[n, 4] < -90: self.cars[n, 4] = -90
             # print(self.acts[n, 7])
-            if self.acts[n, 7]:
+            if self.acts[n, 7]:  # 7: auto_aim
                 if self.car_num > 1:
-                    select = np.where((self.vision[n] == 1))[0]
-                    if select.size:
+                    select = np.where((self.vision[n] == 1))[0]  # 筛选出视野中的敌方车辆
+                    if select.size:  # 如果视野中有敌方车辆
                         angles = np.zeros(select.size)
                         for ii, i in enumerate(select):
-                            x, y = self.cars[i, 1:3] - self.cars[n, 1:3]
-                            angle = np.angle(x + y * 1j, deg=True) - self.cars[i, 3]
+                            x, y = self.cars[i, 1:3] - self.cars[n, 1:3]  # 与敌方车辆的相对坐标
+                            angle = np.angle(x + y * 1j, deg=True) - self.cars[i, 3]  # 与敌方车辆的相对角度
                             if angle >= 180: angle -= 360
                             if angle <= -180: angle += 360
                             if angle >= -self.theta and angle < self.theta:

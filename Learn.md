@@ -69,4 +69,33 @@ y2 是上边界的 y 坐标
 
 #### 3.1.2 play()
 
-仅human模式可以调用，死循环执行一个时间步，且每10个时间步，获取一次指令。
+仅human模式可以调用，死循环执行时间步，且每10个时间步，获取一次指令。
+
+#### 3.1.3 step(orders)
+
+输入指令，连续运行10个时间步，返回状态
+
+#### 3.1.4 one_epoch()
+
+游戏进行一个时间步
+
+#### 3.1.5 move_car(self, n)
+
+
+
+#### 3.1.6 move_bullet(self, n)
+
+update_display(self)
+
+dev_window(self)
+
+get_order(self)
+
+#### orders_to_acts(self, n)
+
+
+
+## 问题
+
+1. Kernal中move_car方法里对自动瞄准的实现是选择视野内车辆中序号最小的那个
+
