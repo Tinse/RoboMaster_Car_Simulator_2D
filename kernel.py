@@ -359,6 +359,9 @@ class Kernel(object):
                    bullets))
         if self.render: self.update_display()
 
+    '''
+    move_car(self, n)的功能是底盘运动、云台运动、自动瞄准、射击、补给
+    '''
     def move_car(self, n):
         if not self.cars[n, 7]:  # 7: freeze_time
             # move chassis
@@ -376,14 +379,15 @@ class Kernel(object):
                 if self.cars[n, 4] > 90: self.cars[n, 4] = 90
                 if self.cars[n, 4] < -90: self.cars[n, 4] = -90
             # print(self.acts[n, 7])
-            if self.acts[n, 7]:  # 7: auto_aim
+            # auto_aim
+            if self.acts[n, 7]:  # 7: auto_aim 自动瞄准
                 if self.car_num > 1:
                     select = np.where((self.vision[n] == 1))[0]  # 筛选出视野中的敌方车辆
                     if select.size:  # 如果视野中有敌方车辆
                         angles = np.zeros(select.size)
                         for ii, i in enumerate(select):
                             x, y = self.cars[i, 1:3] - self.cars[n, 1:3]  # 与敌方车辆的相对坐标
-                            angle = np.angle(x + y * 1j, deg=True) - self.cars[i, 3]  # 与敌方车辆的相对角度
+                            angle = np.angle(x + y * 1j, deg=True) - self.cars[i, 3]  # 两车连线与敌车朝向的夹角
                             if angle >= 180: angle -= 360
                             if angle <= -180: angle += 360
                             if angle >= -self.theta and angle < self.theta:
@@ -394,22 +398,22 @@ class Kernel(object):
                                 armor = self.get_armor(self.cars[i], 1)
                             else:
                                 armor = self.get_armor(self.cars[i], 0)
-                            x, y = armor - self.cars[n, 1:3]
-                            angle = np.angle(x + y * 1j, deg=True) - self.cars[n, 4] - self.cars[n, 3]
+                            x, y = armor - self.cars[n, 1:3]  # 与敌方车辆装甲的相对坐标
+                            angle = np.angle(x + y * 1j, deg=True) - self.cars[n, 4] - self.cars[n, 3]  # 目标角度与云台朝向的夹角
                             if angle >= 180: angle -= 360
                             if angle <= -180: angle += 360
                             angles[ii] = angle
-                        m = np.where(np.abs(angles) == np.abs(angles).min())
-                        self.cars[n, 4] += angles[m][0]
+                        m = np.where(np.abs(angles) == np.abs(angles).min())  # 选择角度差最小的敌方车辆（装甲）
+                        self.cars[n, 4] += angles[m][0]  # 旋转云台
                         if self.cars[n, 4] > 90: self.cars[n, 4] = 90
                         if self.cars[n, 4] < -90: self.cars[n, 4] = -90
             # move x and y
             if self.acts[n, 2] or self.acts[n, 3]:
                 angle = np.deg2rad(self.cars[n, 3])
                 # x
-                p = self.cars[n, 1]
+                p = self.cars[n, 1]  # 1: x
                 self.cars[n, 1] += (self.acts[n, 2]) * np.cos(angle) - (self.acts[n, 3]) * np.sin(angle)
-                if self.check_interface(n):
+                if self.check_interface(n):  # 检查是否与障碍物或者墙壁相撞
                     self.acts[n, 2] = -self.acts[n, 2] * self.move_discount
                     self.cars[n, 1] = p
                 # y
@@ -419,12 +423,12 @@ class Kernel(object):
                     self.acts[n, 3] = -self.acts[n, 3] * self.move_discount
                     self.cars[n, 2] = p
             # fire or not
-            if self.acts[n, 4] and self.cars[n, 10]:
-                if self.cars[n, 9]:
-                    self.cars[n, 10] -= 1
-                    self.bullets.append(
+            if self.acts[n, 4] and self.cars[n, 10]:  # 发射命令且存在剩余子弹
+                if self.cars[n, 9]:  # can_shoot
+                    self.cars[n, 10] -= 1  # 剩余子弹数减1
+                    self.bullets.append(  # 添加子弹的坐标、角度、速度、发射者
                         bullet(self.cars[n, 1:3], self.cars[n, 4] + self.cars[n, 3], self.bullet_speed, n))
-                    self.cars[n, 5] += self.bullet_speed
+                    self.cars[n, 5] += self.bullet_speed  # 热量增加
                     self.cars[n, 9] = 0
                 else:
                     self.cars[n, 9] = 1
@@ -435,10 +439,10 @@ class Kernel(object):
         else:
             self.cars[n, 7] -= 1
             if self.cars[n, 7] == 0:
-                self.cars[n, 8] == 0
+                self.cars[n, 8] = 0
         # check supply
         if self.acts[n, 6]:
-            dis = np.abs(self.cars[n, 1:3] - [self.areas[int(self.cars[n, 0]), 1][0:2].mean(), \
+            dis = np.abs(self.cars[n, 1:3] - [self.areas[int(self.cars[n, 0]), 1][0:2].mean(),
                                               self.areas[int(self.cars[n, 0]), 1][2:4].mean()]).sum()
             if dis < 23 and self.compet_info[int(self.cars[n, 0]), 0] and not self.cars[n, 7]:
                 self.cars[n, 8] = 1

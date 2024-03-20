@@ -81,7 +81,7 @@ y2 是上边界的 y 坐标
 
 #### 3.1.5 move_car(self, n)
 
-
+实现运动的细节，包括底盘旋转运动、云台运动、自动瞄准、平移运动、射击
 
 #### 3.1.6 move_bullet(self, n)
 
@@ -95,7 +95,27 @@ get_order(self)
 
 
 
-## 问题
+## 注意事项
 
-1. Kernal中move_car方法里对自动瞄准的实现是选择视野内车辆中序号最小的那个
+1. 掉血机制：并非击中或撞击任意部位都能掉血，仅限前后左右中间的装甲遭受击中或撞击才会掉血，且存在友军伤害。
 
+## 疑问
+
+1. 发射使能参数cars[n, 9] can_shoot使得子弹不能连续两次发射。
+
+```
+# fire or not
+if self.acts[n, 4] and self.cars[n, 10]:  # 发射命令且存在剩余子弹
+    if self.cars[n, 9]:  # can_shoot
+        self.cars[n, 10] -= 1  # 剩余子弹数减1
+        self.bullets.append(  # 添加子弹的坐标、角度、速度、发射者
+            bullet(self.cars[n, 1:3], self.cars[n, 4] + self.cars[n, 3], self.bullet_speed, n))
+        self.cars[n, 5] += self.bullet_speed  # 热量增加
+        self.cars[n, 9] = 0
+    else:
+        self.cars[n, 9] = 1
+else:
+    self.cars[n, 9] = 1
+```
+
+2. 游戏没有控制时间与现实时间一致
